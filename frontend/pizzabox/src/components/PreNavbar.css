@@ -1,0 +1,19 @@
+#register-btn{
+    background-color: #e69d90; /* Tomato color */
+    color: rgb(48, 47, 47);
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 5px;
+} 
+#register-btn:hover {
+    background-color: #ffffff; /* Darker shade on hover */
+    color: rgb(82, 80, 80);
+    font-weight: bold;
+    border: 2px solid #676464; /* Border to match the button color */
+    
+}
