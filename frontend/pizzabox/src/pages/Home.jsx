@@ -3,6 +3,7 @@ import PreNavbar from '../components/PreNavbar'
 import Navigation from '../components/Navigation'
 import Search from '../components/Search'
 
+import Modal from '../components/Modal/Modal'
 
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
       <PreNavbar/>
       <Navigation/>
       <Search/>
+      <Modal/>
     </>
   )
 }
