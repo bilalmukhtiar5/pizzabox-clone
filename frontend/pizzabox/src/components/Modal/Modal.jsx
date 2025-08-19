@@ -14,42 +14,26 @@ const Modal = () => {
     <div className="d-flex vh-100 justify-content-center align-items-center bg-light">
       {/* Modal */}
       {show && (
-        <div
-          className="modal show fade d-block"
-          tabIndex="-1"
-          role="dialog"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-        >
+        <div className="modal show fade d-block"
+          tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               {/* Header */}
               <div className="modal-header">
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShow(false)}
-                ></button>
+                <button type="button" className="btn-close" onClick={() => setShow(false)}></button>
               </div>
 
               {/* Body */}
               <div className="modal-body">
                 <div className="text-center">
-                  <img
-                    src={logo}
-                    alt=""
-                    style={{ width: '60px', height: '60px' }}
-                  />
+                  <img src={logo} alt="" style={{ width: '60px', height: '60px' }}/>
                   <h5>Select Your Order Type</h5>
 
                   {/* Buttons */}
                   <div className="mb-3">
-                    <button
-                      className={`btn me-2 ${
-                        orderType === 'delivery' ? 'btn-danger' : 'btn-outline-danger'
-                      }`}
-                      onClick={() => setOrderType('delivery')}
-                    >
-                      DELIVERY
+                    <button className={`btn me-2 ${
+                        orderType === 'delivery' ? 'btn-danger' : 'btn-outline-danger'}`}
+                      onClick={() => setOrderType('delivery')}>DELIVERY
                     </button>
 
                     <button
