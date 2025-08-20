@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation'
 import Search from '../components/Search'
 
 import Modal from '../components/Modal/Modal'
+import Footer from '../components/Footer/Footer'
 
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
       <Navigation/>
       <Search/>
       <Modal/>
+      <Footer/>
     </>
   )
 }
