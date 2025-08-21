@@ -9,7 +9,7 @@ const Navigation = () => {
 
     <nav className="container-fluid bg-dark">
       <div className="container p-3 text-danger">
-        <ul className="d-flex justify-content-between gap-3 list-unstyled m-0 px-3 fs-6">
+        <ul className="d-flex justify-content-between list-unstyled m-0 px-5 fs-6">
           <li className="nav-item">
             <a href="#" className="text-white text-decoration-none fw-medium nav-link-hover">BOX COMBOS</a>
           </li>
