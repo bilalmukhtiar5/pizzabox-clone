@@ -1,22 +1,58 @@
-import Category from "../models/Category.js";
+const Category = require("../models/Category");
 
-// Create Category
-export const createCategory = async (req, res) => {
+// Add Category
+exports.store = async (req, res) => {
   try {
-    const category = new Category(req.body);
-    await category.save();
-    res.status(201).json(category);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const category = await Category(req.body);
+    return res.status(201).json(category);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };
 
 // Get All Categories
-export const getCategories = async (req, res) => {
+exports.index = async (req, res) => {
   try {
-    const categories = await Category.find();
-    res.json(categories);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const categories = await Category.find(req.body);
+    return res.json(categories);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get Category by ID
+exports.get = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) return res.status(404).json({ error: "Category not found" });
+    res.json(category);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ✅ Update Category
+exports.update = async (req, res) => {
+  try {
+    const category = await Category.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true } // return updated document
+    );
+    if (!category) return res.status(404).json({ error: "Category not found" });
+    res.json(category);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// ✅ Delete Category
+exports.destroy = async (req, res) => {
+  try {
+    const category = await Category.findByIdAndDelete(req.params.id);
+    if (!category) return res.status(404).json({ error: "Category not found" });
+    res.json({ message: "Category deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

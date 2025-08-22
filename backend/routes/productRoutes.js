@@ -1,10 +1,14 @@
-import express from "express";
-import { createProduct, getProducts, getProductsByCategory } from "../controllers/productController.js";
-
+const express = require("express");
 const router = express.Router();
+const controller = require("../controllers/productController");
 
-router.post("/", createProduct);              // Add Product
-router.get("/", getProducts);                 // Get All Products
-router.get("/category/:categoryId", getProductsByCategory); // Get Products by Category
+// Add Product
+router.post("/", controller.store);
 
-export default router;
+// Get All Products
+router.get("/", controller.index);
+
+// Get Products by Category
+router.get("/category/:categoryId", controller.getProductsByCategory);
+
+module.exports = router;

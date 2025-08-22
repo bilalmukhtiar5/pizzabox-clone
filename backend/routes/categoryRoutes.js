@@ -1,9 +1,12 @@
-import express from "express";
-import { createCategory, getCategories } from '../controllers/categoryController.js';
-
+const express = require("express");
 const router = express.Router();
+const controller = require("../controllers/categoryController");
 
-router.post("/", createCategory);   // Add Category
-router.get("/", getCategories);     // Get All Categories
+router.post("/", controller.store);        // Add Category
+router.get("/", controller.index);         // Get All Categories
+router.get("/:id", controller.get);        // Get Category by ID
+router.put("/:id", controller.update);     // Update Category
+router.delete("/:id", controller.destroy); // Delete Category
 
-export default router;
+module.exports = router;
+

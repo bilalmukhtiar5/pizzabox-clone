@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
@@ -9,18 +10,18 @@ const AddCategory = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/api/categories", { name, description });
-      alert("Category added successfully!");
+      toast.success("Category added successfully!");
       setName("");
       setDescription("");
     } catch (error) {
-      alert("Error adding category");
+      toast.error("Error adding category");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-3 border m-2">
+    <form onSubmit={handleSubmit} className="p-3 border m-2 rounded shadow-sm">
       <h4>Add Category</h4>
-      <input
+      <input 
         type="text"
         placeholder="Category Name"
         value={name}
@@ -28,7 +29,7 @@ const AddCategory = () => {
         required
         className="form-control mb-2"
       />
-      <input
+      <input 
         type="text"
         placeholder="Description"
         value={description}
