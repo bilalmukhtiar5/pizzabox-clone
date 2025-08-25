@@ -6,6 +6,7 @@ import Modal from '../components/Modal/Modal'
 import Footer from '../components/Footer/Footer'
 import TimeStamp from '../components/TimeStamp'
 import AddCategory from '../components/AddCategory'
+import AddProduct from '../components/AddProduct'
 
 
 
@@ -20,7 +21,7 @@ const Home = () => {
       <Search/>
       <Modal/>
       <AddCategory />
-      
+      <AddProduct/>
       
       <Footer/>
     </>

@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const AddCategory = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    
   });
 
   const { name, description } = formData;
@@ -20,51 +18,61 @@ const AddCategory = () => {
   // handle submit
   const onSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:5000/api/categories", formData);
-    if (response.data.success) {
-      setFormData({
-        name: "",
-        description: "",
-        
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/categories",
+        formData
+      );
 
-      });
-      toast.success(response.data.message);
+      if (response.data.success) {
+        setFormData({ name: "", description: "" });
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Something went wrong!");
     }
-
   };
 
   return (
-    <form onSubmit={onSubmit} className="p-3 border m-2 rounded shadow-sm">
-      <h4>Add Category</h4>
+    <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "500px" }}>
+        <h3 className="text-center mb-4">➕ Add New Category</h3>
 
-      <label htmlFor="">Name</label>
-      <input type="text"
-        name="name" placeholder="Category Name"
-        value={name}
-        onChange={onChange} required
-        className="form-control mb-2" />
+        <form onSubmit={onSubmit}>
+          {/* Category Name */}
+          <div className="mb-3">
+            <label className="form-label">Category Name</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter category name"
+              value={name}
+              onChange={onChange}
+              required
+              className="form-control"
+            />
+          </div>
 
-      <label htmlFor="">Description</label>
-      <input type="text"
-        name="description" placeholder="Description"
-        value={description}
-        onChange={onChange}
-        className="form-control mb-2" />
+          {/* Description */}
+          <div className="mb-3">
+            <label className="form-label">Description</label>
+            <input
+              type="text"
+              name="description"
+              placeholder="Enter description"
+              value={description}
+              onChange={onChange}
+              className="form-control"
+            />
+          </div>
 
-      {/* <div>
-        <label htmlFor="">Price</label>
-        <input
-          type="text"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={onChange}
-          className="form-control mb-2"
-          required
-        />
-      </div> */}
-      <button type="submit" className="btn btn-success mt-2">Add Category</button>
-    </form>
+          {/* Submit Button */}
+          <button type="submit" className="btn btn-success w-100">
+            Add Category
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
