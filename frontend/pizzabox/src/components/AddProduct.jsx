@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function AddProduct() {
+const AddProduct = () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
-  const [form, setForm] = useState({
-    name: "",
-    price: "",
-    category: ""
-  });
 
-  // Fetch categories for dropdown
   useEffect(() => {
-    axios.get("http://localhost:5000/api/categories")
+    axios.get("http://localhost:5000/api/categories") // categories API
       .then(res => setCategories(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -19,71 +16,66 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/products", form);
-      alert("✅ Product added successfully!");
-      setForm({ name: "", price: "", category: "" }); // reset form
+      await axios.post("http://localhost:5000/api/products", {
+        name,
+        price,
+        category, // yahan select ka value bhejna zaroori hai
+      });
+      alert("Product added successfully!");
+      setName("");
+      setPrice("");
+      setCategory("");
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "500px" }}>
-        <h2 className="text-center mb-4">➕ Add New Product</h2>
-        <form onSubmit={handleSubmit}>
-          {/* Product Name */}
-          <div className="mb-3">
-            <label className="form-label">Product Name</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter product name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
-            />
-          </div>
+    <div className="container mt-4">
+      <h3>Add Product</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label>Name</label>
+          <input
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-          {/* Price */}
-          <div className="mb-3">
-            <label className="form-label">Price (PKR)</label>
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Enter price"
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              required
-            />
-          </div>
+        <div className="mb-3">
+          <label>Price</label>
+          <input
+            type="number"
+            className="form-control"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+        </div>
 
-          {/* Category Dropdown */}
-          <div className="mb-3">
-            <label className="form-label">Category</label>
-            <select
-              className="form-select"
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              required
-            >
-              <option value="">-- Select Category --</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="mb-3">
+          <label>Category</label>
+          <select
+            className="form-control"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">-- Select Category --</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          {/* Submit Button */}
-          <button type="submit" className="btn btn-primary w-100">
-            Add Product
-          </button>
-        </form>
-      </div>
+        <button type="submit" className="btn btn-primary">
+          Add Product
+        </button>
+      </form>
     </div>
   );
-}
+};
 
 export default AddProduct;

@@ -10,6 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
 import AddProduct from './components/AddProduct';
 
+import ProductList from './components/ProductList';
+
+
 function App() {
   
 
@@ -23,6 +26,7 @@ function App() {
       <Route path="/addcategory"  element={<AddCategory/>}/>
       <Route path="/listcategory"  element={<CategoryList/>}/>
       <Route path="/addproduct"  element={<AddProduct/>}/>
+      <Route path="/listproduct"  element={<ProductList/>}/>
       
       </Routes>
       <ToastContainer

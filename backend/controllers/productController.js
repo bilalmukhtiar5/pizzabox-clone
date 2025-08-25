@@ -3,22 +3,20 @@ const Product = require("../models/Product"); // ✅ Make sure model file is cor
 // Add Product
 exports.store = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
-    return res.json({
-      status: 200,
-      success: true,
-      message: "Product added successfully",
-      product
-    });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
+    const { name, price, category } = req.body; // yahan category aani chahiye (_id)
+    const product = new Product({ name, price, category });
+    await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
 // Get All Products
 exports.index = async (req, res) => {
   try {
-    const products = await Product.find({});
+    // 👇 populate lagao
+    const products = await Product.find({}).populate("category");
     return res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -28,7 +26,7 @@ exports.index = async (req, res) => {
 // Get Product by ID
 exports.get = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate("category");
     if (!product) return res.status(404).json({ error: "Product not found" });
     res.json(product);
   } catch (err) {
