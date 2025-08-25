@@ -2,41 +2,68 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AddCategory = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
 
-  const handleSubmit = async (e) => {
+const AddCategory = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    
+  });
+
+  const { name, description } = formData;
+
+  // handle input change
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // handle submit
+  const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:5000/api/categories", { name, description });
-      toast.success("Category added successfully!");
-      setName("");
-      setDescription("");
-    } catch (error) {
-      toast.error("Error adding category");
+    const response = await axios.post("http://localhost:5000/api/categories", formData);
+    if (response.data.success) {
+      setFormData({
+        name: "",
+        description: "",
+        
+
+      });
+      toast.success(response.data.message);
     }
+
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-3 border m-2 rounded shadow-sm">
+    <form onSubmit={onSubmit} className="p-3 border m-2 rounded shadow-sm">
       <h4>Add Category</h4>
-      <input 
-        type="text"
-        placeholder="Category Name"
+
+      <label htmlFor="">Name</label>
+      <input type="text"
+        name="name" placeholder="Category Name"
         value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-        className="form-control mb-2"
-      />
-      <input 
-        type="text"
-        placeholder="Description"
+        onChange={onChange} required
+        className="form-control mb-2" />
+
+      <label htmlFor="">Description</label>
+      <input type="text"
+        name="description" placeholder="Description"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="form-control mb-2"
-      />
-      <button type="submit" className="btn btn-success">Add Category</button>
+        onChange={onChange}
+        className="form-control mb-2" />
+
+      {/* <div>
+        <label htmlFor="">Price</label>
+        <input
+          type="text"
+          name="price"
+          placeholder="Price"
+          value={formData.price}
+          onChange={onChange}
+          className="form-control mb-2"
+          required
+        />
+      </div> */}
+      <button type="submit" className="btn btn-success mt-2">Add Category</button>
     </form>
   );
 };

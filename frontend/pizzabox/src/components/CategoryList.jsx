@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 
 const CategoryList = () => {
@@ -79,18 +79,8 @@ const CategoryList = () => {
               <td>{cat.name}</td>
               <td>{cat.description}</td>
               <td>
-                <button
-                  className="btn btn-warning btn-sm me-2"
-                  onClick={() => handleEdit(cat)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(cat._id)}
-                >
-                  Delete
-                </button>
+                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(cat)}>Edit</button>
+                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(cat._id)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -116,14 +106,8 @@ const CategoryList = () => {
             onChange={(e) => setDescription(e.target.value)}
             className="form-control mb-2"
           />
-          <button type="submit" className="btn btn-success me-2">
-            Update
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => setEditingCategory(null)}
-          >
+          <button type="submit" className="btn btn-success me-2">Update</button>
+          <button type="button" className="btn btn-secondary" onClick={() => setEditingCategory(null)}>
             Cancel
           </button>
         </form>

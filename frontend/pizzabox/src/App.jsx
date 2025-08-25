@@ -7,6 +7,8 @@ import AddCategory from './components/AddCategory';
 import CategoryList from './components/CategoryList'
 import "react-toastify/dist/ReactToastify.css";
 
+import { ToastContainer } from 'react-toastify';
+
 function App() {
   
 
@@ -21,7 +23,17 @@ function App() {
       <Route path="/listcategory"  element={<CategoryList/>}/>
       
       </Routes>
-      
+      <ToastContainer
+      position="top-right"
+        autoClose={3000}     // ✅ 3 second me close
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"/>
       </BrowserRouter>
       
     </>

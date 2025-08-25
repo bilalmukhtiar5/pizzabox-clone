@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require("cors");
-const connectDB = require("./database/db");
+const {connectDb} = require("./database/db");
 const categoryRoutes = require("./routes/categoryRoutes.js");
 const productRoutes = require("./routes/productRoutes.js"); // make sure this file exists
 const app = express();   // <-- MISSING LINE
@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to the database
-connectDB();
+connectDb();
 
 // Routes
 app.use("/api/categories", categoryRoutes);

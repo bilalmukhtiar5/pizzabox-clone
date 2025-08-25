@@ -3,8 +3,8 @@ const Category = require("../models/Category");
 // Add Category
 exports.store = async (req, res) => {
   try {
-    const category = await Category(req.body);
-    return res.status(201).json(category);
+    const category = await Category.create(req.body);
+    return res.json({status:200, success: true, message: "Category added successfully", category});
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
