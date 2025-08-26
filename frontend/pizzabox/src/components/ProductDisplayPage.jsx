@@ -45,7 +45,7 @@ const ProductDisplay = () => {
                                             {product.description}
                                         </Card.Text>
                                         <Card.Text className="fw-semibold text-primary fs-5 mb-3">
-                                            ${product.price}
+                                            Rs.{product.price}.00
                                         </Card.Text>
                                         <Button variant="dark" className="w-100 rounded-pill mt-auto">
                                             Add to Cart
