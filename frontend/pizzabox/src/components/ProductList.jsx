@@ -3,12 +3,18 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [formData, setFormData] = useState({ name: "", price: "", category: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    category: "",
+  });
 
   // Fetch Products
   const fetchProducts = async () => {
@@ -54,19 +60,28 @@ const ProductList = () => {
     setEditingProduct(product._id);
     setFormData({
       name: product.name,
+      description: product.description || "",
       price: product.price,
-      category: product.category?._id || ""
+      category: product.category?._id || "",
     });
+  };
+
+  // Cancel Editing
+  const cancelEdit = () => {
+    setEditingProduct(null);
+    setFormData({ name: "", description: "", price: "", category: "" });
   };
 
   // Save Edit
   const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/products/${editingProduct}`, formData);
+      await axios.put(
+        `http://localhost:5000/api/products/${editingProduct}`,
+        formData
+      );
       toast.success("Product Updated!");
-      setEditingProduct(null);
-      setFormData({ name: "", price: "", category: "" });
+      cancelEdit();
       fetchProducts();
     } catch (error) {
       console.error(error);
@@ -76,15 +91,16 @@ const ProductList = () => {
 
   return (
     <div className="container mt-5">
-      <h3 className="mb-4">Products List</h3>
-      <table className="table table-bordered table-striped">
+      <h3 className="mb-4">📦 Products List</h3>
+      <table className="table table-hover table-striped align-middle">
         <thead className="table-dark">
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th style={{ width: "30%" }}>Description</th>
             <th>Price</th>
             <th>Category</th>
-            <th>Actions</th>
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -93,6 +109,11 @@ const ProductList = () => {
               <tr key={product._id}>
                 <td>{index + 1}</td>
                 <td>{product.name}</td>
+                <td>
+                  {product.description?.length > 50
+                    ? product.description.slice(0, 50) + "..."
+                    : product.description}
+                </td>
                 <td>Rs. {product.price}</td>
                 <td>{product.category?.name || "No Category"}</td>
                 <td className="text-center">
@@ -113,7 +134,7 @@ const ProductList = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="text-center">
+              <td colSpan="6" className="text-center">
                 No products found.
               </td>
             </tr>
@@ -123,46 +144,65 @@ const ProductList = () => {
 
       {/* Edit Form */}
       {editingProduct && (
-        <form onSubmit={handleEdit} className="border p-3 mt-4">
-          <h5>Edit Product</h5>
-          <input
-            type="text"
-            className="form-control mb-2"
-            placeholder="Name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-          <input
-            type="number"
-            className="form-control mb-2"
-            placeholder="Price"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-          />
+        <div className="card p-4 mt-4 shadow-sm">
+          <h5 className="mb-3">✏️ Edit Product</h5>
+          <form onSubmit={handleEdit}>
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
+            <textarea
+              className="form-control mb-2"
+              placeholder="Description"
+              rows="3"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+            />
+            <input
+              type="number"
+              className="form-control mb-2"
+              placeholder="Price"
+              value={formData.price}
+              onChange={(e) =>
+                setFormData({ ...formData, price: e.target.value })
+              }
+            />
 
-          {/* Category Dropdown */}
-          <select
-            className="form-select mb-2"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat._id} value={cat._id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+            {/* Category Dropdown */}
+            <select
+              className="form-select mb-3"
+              value={formData.category}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
 
-          <button type="submit" className="btn btn-success me-2">Save</button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => setEditingProduct(null)}
-          >
-            Cancel
-          </button>
-        </form>
+            <button type="submit" className="btn btn-success me-2">
+              Save
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={cancelEdit}
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
       )}
 
       <ToastContainer />

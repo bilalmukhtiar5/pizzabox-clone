@@ -1,0 +1,19 @@
+/* Fix image size */
+.image-wrapper {
+  width: 100%;
+  height: 200px; /* fix image height */
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* crop/fit image */
+}
+
+/* Make all product cards equal height */
+.product-card {
+  min-height: 420px; /* adjust based on design */
+  display: flex;
+  flex-direction: column;
+}

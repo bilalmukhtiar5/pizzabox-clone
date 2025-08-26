@@ -6,7 +6,7 @@ import Modal from '../components/Modal/Modal'
 import Footer from '../components/Footer/Footer'
 import TimeStamp from '../components/TimeStamp'
 import BoxCombos from '../section/BoxCombos'
-
+import ProductDisplayPage from '../components/ProductDisplayPage'
 
 
 
@@ -19,7 +19,7 @@ const Home = () => {
       <PreNavbar/>
       <Navigation/>
       <Search/>
-      <BoxCombos/>
+      <ProductDisplayPage/>
       <Footer/>
     </>
   )

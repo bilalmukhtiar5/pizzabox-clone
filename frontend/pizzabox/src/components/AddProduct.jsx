@@ -1,32 +1,48 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/categories") // categories API
-      .then(res => setCategories(res.data))
-      .catch(err => console.error(err));
+    axios
+      .get("http://localhost:5000/api/categories")
+      .then((res) => setCategories(res.data))
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to load categories");
+      });
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!name || !description || !price || !category) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
     try {
       await axios.post("http://localhost:5000/api/products", {
         name,
+        description,
         price,
-        category, // yahan select ka value bhejna zaroori hai
+        category,
       });
-      alert("Product added successfully!");
+      toast.success("✅ Product added successfully!");
       setName("");
+      setDescription("");
       setPrice("");
       setCategory("");
     } catch (err) {
       console.error(err);
+      toast.error("❌ Error adding product");
     }
   };
 
@@ -35,31 +51,45 @@ const AddProduct = () => {
       <h3>Add Product</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label>Name</label>
+          <label className="form-label">Name</label>
           <input
             type="text"
             className="form-control"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
 
         <div className="mb-3">
-          <label>Price</label>
+          <label className="form-label">Description</label>
+          <textarea
+            className="form-control"
+            rows="3"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Price</label>
           <input
             type="number"
             className="form-control"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            required
           />
         </div>
 
         <div className="mb-3">
-          <label>Category</label>
+          <label className="form-label">Category</label>
           <select
             className="form-control"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            required
           >
             <option value="">-- Select Category --</option>
             {categories.map((cat) => (
@@ -74,6 +104,8 @@ const AddProduct = () => {
           Add Product
         </button>
       </form>
+
+      <ToastContainer />
     </div>
   );
 };

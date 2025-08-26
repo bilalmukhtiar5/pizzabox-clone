@@ -1,10 +1,10 @@
-const Product = require("../models/Product"); // ✅ Make sure model file is correct
+const Product = require("../models/Product"); // ✅ Model
 
 // Add Product
 exports.store = async (req, res) => {
   try {
-    const { name, price, category } = req.body; // yahan category aani chahiye (_id)
-    const product = new Product({ name, price, category });
+    const { name, description, price, category } = req.body; // ✅ Description add kiya
+    const product = new Product({ name, description, price, category });
     await product.save();
     res.status(201).json(product);
   } catch (error) {
@@ -15,7 +15,6 @@ exports.store = async (req, res) => {
 // Get All Products
 exports.index = async (req, res) => {
   try {
-    // 👇 populate lagao
     const products = await Product.find({}).populate("category");
     return res.json(products);
   } catch (err) {
@@ -48,7 +47,8 @@ exports.update = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-// productController.js
+
+// Get Products by Category
 exports.getProductsByCategory = async (req, res) => {
   try {
     const products = await Product.find({ category: req.params.categoryId }).populate("category");
@@ -57,6 +57,7 @@ exports.getProductsByCategory = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 // Delete Product
 exports.destroy = async (req, res) => {
   try {

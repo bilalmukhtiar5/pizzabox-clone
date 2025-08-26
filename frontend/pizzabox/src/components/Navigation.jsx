@@ -34,9 +34,7 @@ const Navigation = () => {
           <li className="nav-item">
             <a href="#" className="text-white text-decoration-none fw-medium nav-link-hover">BEVERAGES</a>
           </li>
-          <li className="nav-item">
-            <a href='#' className="text-white text-decoration-none fw-medium nav-link-hover">Add Category</a>
-          </li>
+          
         </ul>
 
       </div>
