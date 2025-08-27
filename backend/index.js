@@ -3,6 +3,7 @@ const cors = require("cors");
 const {connectDb} = require("./database/db");
 const categoryRoutes = require("./routes/categoryRoutes.js");
 const productRoutes = require("./routes/productRoutes.js"); // make sure this file exists
+const userRoutes = require("./routes/user.route.js");
 const app = express();   // <-- MISSING LINE
 const port = 5000;
 
@@ -16,6 +17,7 @@ connectDb();
 // Routes
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/user", userRoutes)
 
 
 app.get('/', (req, res) => {
