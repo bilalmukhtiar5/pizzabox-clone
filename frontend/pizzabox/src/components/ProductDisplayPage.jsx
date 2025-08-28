@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
+import ProductImage from '../assets/images/product-placeholder.png'; // ✅ fix
 
 const ProductDisplay = () => {
     const [products, setProducts] = useState([]);
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios
-            .get("http://localhost:5000/api/products") // products ke API call
-            .then((res) => setProducts(res.data))
-            .catch((err) => console.error(err));
-    }, []);
+  axios.get("http://localhost:5000/api/products")
+    .then((res) => setProducts(res.data))
+    .catch((err) => console.error(err))
+    .finally(() => setLoading(false));
+}, []);
 
-    // Group products by category
     const groupedProducts = products.reduce((acc, product) => {
         const categoryName = product.category?.name || "Uncategorized";
         if (!acc[categoryName]) {
@@ -30,24 +30,26 @@ const ProductDisplay = () => {
                     <div className="row">
                         {groupedProducts[category].map((product) => (
                             <div className="col-md-3 mb-3" key={product._id}>
-                                <Card className="product-card shadow-sm border-0 rounded-4 overflow-hidden h-100">
+                                <Card className="product-card shadow-sm border-0 rounded-4 overflow-hidden h-100 d-flex justify-content-between">
                                     <div className="image-wrapper">
                                         <Card.Img
                                             variant="top"
-                                            src={product.image || "https://via.placeholder.com/300x200"}
+                                            src={ProductImage} // ✅ placeholder
                                             alt={product.name}
                                             className="img-fluid product-image"
                                         />
                                     </div>
                                     <Card.Body className="p-3 d-flex flex-column">
-                                        <Card.Title className="fw-bold text-dark mb-2">{product.name}</Card.Title>
-                                        <Card.Text className="text-muted small mb-3 flex-grow-1">
+                                        <Card.Text className="fw-bold text-dark mb-1 d-flex justify-content-center">
+                                            {product.name}
+                                        </Card.Text>
+                                        <Card.Text className="text-muted small mb-3 flex-grow-1 d-flex justify-content-center">
                                             {product.description}
                                         </Card.Text>
-                                        <Card.Text className="fw-semibold text-primary fs-5 mb-3">
+                                        <Card.Text className="fw-semibold text-white fs-5 mb-3 bg-danger rounded-3 px-3 d-inline-block ms-auto">
                                             Rs.{product.price}.00
                                         </Card.Text>
-                                        <Button variant="dark" className="w-100 rounded-pill mt-auto">
+                                        <Button variant="dark" className="w-100 rounded-2 mt-auto shadow-sm">
                                             Add to Cart
                                         </Button>
                                     </Card.Body>
