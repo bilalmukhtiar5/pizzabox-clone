@@ -23,9 +23,13 @@ exports.login = async (req,res,next) => {
         if(!user){
             return res.json({status:200, success:false, message:"user not found"})
         }
-        const userFinded = await bcrypt.compare(password, user.password)
-        console.log("~exports.login = ~userFinded:~", userFinded)
-        return res.json({status:200, success:true, message:"user logged in successfully",user  }) 
+        const userFinded = await bcrypt.compare(password,user.password)
+        if(userFinded){
+            return res.json({ status: 200, success: true, message: "User Logged in Successfully" })
+        }
+         else{
+            return res.json({status:400,message:"Password Incorrect",success:false})
+        }
     } catch(error){
         console.log(error)
     }

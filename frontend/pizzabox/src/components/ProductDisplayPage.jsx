@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import ProductImage from '../assets/images/product-placeholder.png'; // ✅ fix
+import { CiHeart } from "react-icons/ci";
 
 const ProductDisplay = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-  axios.get("http://localhost:5000/api/products")
-    .then((res) => setProducts(res.data))
-    .catch((err) => console.error(err))
-    .finally(() => setLoading(false));
-}, []);
+        axios.get("http://localhost:5000/api/products")
+            .then((res) => setProducts(res.data))
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
+    }, []);
 
     const groupedProducts = products.reduce((acc, product) => {
         const categoryName = product.category?.name || "Uncategorized";
@@ -46,12 +47,24 @@ const ProductDisplay = () => {
                                         <Card.Text className="text-muted small mb-3 flex-grow-1 d-flex justify-content-center">
                                             {product.description}
                                         </Card.Text>
-                                        <Card.Text className="fw-semibold text-white fs-5 mb-3 bg-danger rounded-3 px-3 d-inline-block ms-auto">
+                                        <Card.Text className="fw-semibold text-black fs-5 mb-3 rounded-3 px-3 d-inline-block ms-auto">
                                             Rs.{product.price}.00
                                         </Card.Text>
-                                        <Button variant="dark" className="w-100 rounded-2 mt-auto shadow-sm">
-                                            Add to Cart
-                                        </Button>
+                                        
+                                        <div className="d-flex justify-content-between align-items-center mt-auto">
+                                            {/* Add to Cart (left) */}
+                                            <Button
+                                                variant="dark"
+                                                className="rounded-2 shadow-sm d-flex align-items-center"
+                                            >
+                                                Add to Cart
+                                            </Button>
+
+                                            {/* Heart Icon (right) */}
+                                            <CiHeart className="heart-icon ms-3" size={24} />
+                                        </div>
+
+
                                     </Card.Body>
                                 </Card>
                             </div>
