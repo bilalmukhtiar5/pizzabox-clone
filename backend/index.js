@@ -1,10 +1,11 @@
-const express = require('express')
+const express = require('express');
 const cors = require("cors");
-const {connectDb} = require("./database/db");
+const { connectDb } = require("./database/db");
 const categoryRoutes = require("./routes/categoryRoutes.js");
 const productRoutes = require("./routes/productRoutes.js"); // make sure this file exists
-const userRoutes = require("./routes/user.route.js");
-const app = express();   // <-- MISSING LINE
+const authRoutes = require("./routes/auth.js");
+
+const app = express();   // 👈 yahan banana hi zaroori hai
 const port = 5000;
 
 // Middleware
@@ -17,14 +18,14 @@ connectDb();
 // Routes
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/user", userRoutes)
 
+// Routes
+app.use("/api/auth", authRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
-})
-
+});
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-})
+  console.log(`🚀 Server running on port ${port}`);
+});
