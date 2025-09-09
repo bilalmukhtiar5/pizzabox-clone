@@ -4,9 +4,13 @@ const { connectDb } = require("./database/db");
 const categoryRoutes = require("./routes/categoryRoutes.js");
 const productRoutes = require("./routes/productRoutes.js"); // make sure this file exists
 const authRoutes = require("./routes/auth.js");
-
+const cartRoutes = require("./routes/cartRoutes");
+const path = require ("path");
 const app = express();   // 👈 yahan banana hi zaroori hai
 const port = 5000;
+// Serve static files from uploads
+app.use('/uploads', express.static('uploads'));
+
 
 // Middleware
 app.use(express.json());
@@ -18,7 +22,7 @@ connectDb();
 // Routes
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
-
+app.use("/api/cart", cartRoutes);
 // Routes
 app.use("/api/auth", authRoutes);
 

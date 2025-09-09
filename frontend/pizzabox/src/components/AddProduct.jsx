@@ -9,6 +9,8 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const [image, setImage] = useState(null); // ✅ single file
+  const [preview, setPreview] = useState(null); // ✅ single preview
 
   useEffect(() => {
     axios
@@ -20,6 +22,12 @@ const AddProduct = () => {
       });
   }, []);
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    setPreview(file ? URL.createObjectURL(file) : null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,17 +37,27 @@ const AddProduct = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/products", {
-        name,
-        description,
-        price,
-        category,
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
+
+      if (image) {
+        formData.append("image", image); // ✅ send file
+      }
+
+      await axios.post("http://localhost:5000/api/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
       toast.success("✅ Product added successfully!");
       setName("");
       setDescription("");
       setPrice("");
       setCategory("");
+      setImage(null);
+      setPreview(null);
     } catch (err) {
       console.error(err);
       toast.error("❌ Error adding product");
@@ -99,6 +117,34 @@ const AddProduct = () => {
             ))}
           </select>
         </div>
+
+        {/* File Upload */}
+        <div className="mb-3">
+          <label className="form-label">Upload Image</label>
+          <input
+            type="file"
+            className="form-control"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+
+        {/* Preview */}
+        {preview && (
+          <div className="mb-3">
+            <img
+              src={preview}
+              alt="preview"
+              style={{
+                width: "100px",
+                height: "100px",
+                objectFit: "cover",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+              }}
+            />
+          </div>
+        )}
 
         <button type="submit" className="btn btn-primary">
           Add Product

@@ -3,8 +3,18 @@ const Product = require("../models/Product"); // ✅ Model
 // Add Product
 exports.store = async (req, res) => {
   try {
-    const { name, description, price, category } = req.body; // ✅ Description add kiya
-    const product = new Product({ name, description, price, category });
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const { name, description, price, category } = req.body;
+
+    const product = new Product({
+      name,
+      description,
+      price,
+      category,
+      image: imagePath, // ✅ save file path
+    });
+
     await product.save();
     res.status(201).json(product);
   } catch (error) {

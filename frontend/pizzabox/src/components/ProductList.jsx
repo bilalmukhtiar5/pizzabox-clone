@@ -97,52 +97,72 @@ const ProductList = () => {
   <div style={{ maxHeight: "600px", overflowY: "auto" }}>
     <table className="table table-hover table-striped align-middle">
       <thead className="table-dark sticky-top">
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th style={{ width: "30%" }}>Description</th>
-          <th>Price</th>
-          <th>Category</th>
-          <th className="text-center">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.length > 0 ? (
-          products.map((product, index) => (
-            <tr key={product._id}>
-              <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>
-                {product.description?.length > 50
-                  ? product.description.slice(0, 50) + "..."
-                  : product.description}
-              </td>
-              <td>Rs. {product.price}</td>
-              <td>{product.category?.name || "No Category"}</td>
-              <td className="text-center">
-                <button
-                  className="btn btn-sm btn-primary me-2"
-                  onClick={() => startEdit(product)}
-                >
-                  <FaEdit /> Edit
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => handleDelete(product._id)}
-                >
-                  <MdDelete /> Delete
-                </button>
-              </td>
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="6" className="text-center">
-              No products found.
-            </td>
-          </tr>
-        )}
-      </tbody>
+  <tr>
+    <th>#</th>
+    <th>Image</th> {/* 👈 New column */}
+    <th>Name</th>
+    <th style={{ width: "30%" }}>Description</th>
+    <th>Price</th>
+    <th>Category</th>
+    <th className="text-center">Actions</th>
+  </tr>
+</thead>
+<tbody>
+  {products.length > 0 ? (
+    products.map((product, index) => (
+      <tr key={product._id}>
+        <td>{index + 1}</td>
+        
+        {/* 👇 First image show karna */}
+        <td>
+  {product.image ? (
+    <img
+      src={`http://localhost:5000${product.image}`}
+      alt={product.name}
+      style={{
+        width: "60px",
+        height: "60px",
+        objectFit: "cover",
+        borderRadius: "5px",
+      }}
+    />
+  ) : (
+    <span>No Image</span>
+  )}
+</td>
+
+        <td>{product.name}</td>
+        <td>
+          {product.description?.length > 50
+            ? product.description.slice(0, 50) + "..."
+            : product.description}
+        </td>
+        <td>Rs. {product.price}</td>
+        <td>{product.category?.name || "No Category"}</td>
+        <td className="text-center">
+          <button
+            className="btn btn-sm btn-primary me-2"
+            onClick={() => startEdit(product)}
+          >
+            <FaEdit /> Edit
+          </button>
+          <button
+            className="btn btn-sm btn-danger"
+            onClick={() => handleDelete(product._id)}
+          >
+            <MdDelete /> Delete
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="7" className="text-center"> {/* 👈 colSpan update */}
+        No products found.
+      </td>
+    </tr>
+  )}
+</tbody>
     </table>
   </div>
 

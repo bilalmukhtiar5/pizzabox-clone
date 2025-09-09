@@ -13,7 +13,20 @@ const ProductDisplay = () => {
             .catch((err) => console.error(err))
             .finally(() => setLoading(false));
     }, []);
-
+    const addToCart = async (productId) => {
+        try {
+            const userId = "68abc12345..."; // TODO: Replace with logged-in user ID
+            await axios.post("http://localhost:5000/api/cart/add", {
+                userId,
+                productId,
+                quantity: 1,
+            });
+            toast.success("✅ Added to Cart!");
+        } catch (err) {
+            console.error(err);
+            toast.error("❌ Failed to add to cart");
+        }
+    };
     const groupedProducts = products.reduce((acc, product) => {
         const categoryName = product.category?.name || "Uncategorized";
         if (!acc[categoryName]) {
@@ -35,7 +48,11 @@ const ProductDisplay = () => {
                                     <div className="image-wrapper">
                                         <Card.Img
                                             variant="top"
-                                            src={ProductImage} // ✅ placeholder
+                                            src={
+                                                product.image
+                                                    ? `http://localhost:5000${product.image}`
+                                                    : ProductImage
+                                            }
                                             alt={product.name}
                                             className="img-fluid product-image"
                                         />
@@ -50,12 +67,13 @@ const ProductDisplay = () => {
                                         <Card.Text className="fw-semibold text-black fs-5 mb-3 rounded-3 px-3 d-inline-block ms-auto">
                                             Rs.{product.price}.00
                                         </Card.Text>
-                                        
+
                                         <div className="d-flex justify-content-between align-items-center mt-auto">
                                             {/* Add to Cart (left) */}
                                             <Button
                                                 variant="dark"
                                                 className="rounded-2 shadow-sm d-flex align-items-center"
+                                                onClick={() => addToCart(product._id)}
                                             >
                                                 Add to Cart
                                             </Button>
